@@ -1,8 +1,17 @@
 package _00_IntroToStacks;
 
-public class _02_TextUndoRedo {
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Stack;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class _02_TextUndoRedo implements KeyListener {
     /* 
      * Create a JFrame with a JPanel and a JLabel.
+     
      * 
      * Every time a key is pressed, add that character to the JLabel. It should
      * look like a basic text editor.
@@ -16,6 +25,47 @@ public class _02_TextUndoRedo {
      * pressed, the top Character is popped  off the Stack and added back to
      * the JLabel.
      */
-
+	JFrame frame;
+	JPanel panel;
+	JLabel label;
+	Stack<Character> chars=new Stack<Character>();
+	public  void setup() {
+		frame=new JFrame();
+		
+		label=new JLabel();
+		
+		frame.add(label);
+		frame.addKeyListener(this);
+		frame.setVisible(true);
+	}
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		if(arg0.getKeyChar()==KeyEvent.VK_BACK_SPACE) {
+			String text=label.getText();
+			char c=text.charAt(text.length()-1);
+			text=text.substring(0, text.length()-1);
+			label.setText(text);
+			chars.add(c);
+		}
+		else if(arg0.getKeyChar()==KeyEvent.VK_U) {
+			if(!chars.isEmpty()) {
+			label.setText(label.getText()+chars.pop());
+			}
+		}
+		else {
+	label.setText(label.getText()+String.valueOf(arg0.getKeyChar()));
+		}
+	}
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
