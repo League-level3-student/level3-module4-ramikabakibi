@@ -25,7 +25,11 @@ public static void main(String[] args) {
 	
 	new Hangman().game();
 	
-	
+	//I've coded getting a random number for users, and that amount of times i call the readrandomlinefromfile, and so that gets 
+	//a random word, which i push to the stack, and then i pop that word off from thr stack, and then add a "-" for every character in that word
+	//using a jlablel. I added the keylistener to the frame and thats why there are methods down there, so just need to code the rest saying if
+	//they guess the right letter replace the - with the letter, and if they guess incorrectly, reduce a life(need to show that on the frame)
+	//also right now the main method starts the program at the game method, which calls the setup methods but ill need methods for restarting and stuff
 	
 	
 	
