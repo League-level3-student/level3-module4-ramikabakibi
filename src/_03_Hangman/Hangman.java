@@ -13,23 +13,29 @@ public class Hangman implements KeyListener {
 	JFrame frame=new JFrame();
 	JPanel panel=new JPanel();
 	JLabel label=new JLabel();
+	Stack<String> words=new Stack<String>();
+	String wordToGuess;
+	int lives=6;
+	
+	JLabel lifeCount=new JLabel();
+
 	void setup() {
 		
 		frame.add(panel);
 		panel.add(label);
 		frame.setVisible(true);
 		frame.addKeyListener(this);
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	lifeCount.setText("Lives: "+lives);
+	panel.add(lifeCount);
+		frame.pack();
+	
 	}
 
 public static void main(String[] args) {
 	
 	new Hangman().game();
 	
-	//I've coded getting a random number for users, and that amount of times i call the readrandomlinefromfile, and so that gets 
-	//a random word, which i push to the stack, and then i pop that word off from thr stack, and then add a "-" for every character in that word
-	//using a jlablel. I added the keylistener to the frame and thats why there are methods down there, so just need to code the rest saying if
-	//they guess the right letter replace the - with the letter, and if they guess incorrectly, reduce a life(need to show that on the frame)
-	//also right now the main method starts the program at the game method, which calls the setup methods but ill need methods for restarting and stuff
 	
 	
 	
@@ -38,17 +44,42 @@ void game() {
 	setup();
 	String answer =JOptionPane.showInputDialog("Input a number between 1 and 266");
 	int rounds=Integer.parseInt(answer);
-	Stack<String> words=new Stack<String>();
+	
 	for(int i=0; i<rounds; i++) {
 	String randWord=Utilities.readRandomLineFromFile("dictionary.txt");
 	if(!words.contains(randWord)) {
 	words.push(randWord);
 	}
 	}
-	String wordToGuess=words.pop();
+	restart();
+	 
+}
+void restart() {
+	if(!words.isEmpty()) {
+	wordToGuess=words.pop();
+	 String text="";
 	int size=wordToGuess.length();
 	for(int i=0; i<size; i++) {
-		label.setText(label.getText()+"-");
+		text+="-";
+		
+	}
+	label.setText(text);
+	frame.pack();
+}
+	else {
+		endGame();
+		
+	}
+}
+
+void endGame() {
+	if(words.isEmpty()) {
+		JOptionPane.showMessageDialog(null, "YOU WONNNNNNN!!! THERE ARE NO MORE WORDS TO GUESSSS!!");
+		System.exit(0);
+	}
+	if(lives==0) {
+		JOptionPane.showMessageDialog(null, "Sorry, you lost bruh. No lives left");
+		System.exit(0);
 	}
 }
 
@@ -65,9 +96,35 @@ public void keyReleased(KeyEvent arg0) {
 }
 
 @Override
-public void keyTyped(KeyEvent arg0) {
+public void keyTyped(KeyEvent event) {
 	// TODO Auto-generated method stub
-	
+	char typed=event.getKeyChar();
+	String newText="";
+	String oldText=label.getText();
+	if(wordToGuess.contains(String.valueOf(typed))) {
+		for(int i=0; i<wordToGuess.length(); i++) {
+			
+			if(wordToGuess.charAt(i)==typed) {
+				newText+=typed;
+			}
+			else {
+				newText+=oldText.charAt(i);
+			}
+		}
+		label.setText(newText);
+		
+	}
+	else {
+		lives--;
+		lifeCount.setText("Lives: "+lives);
+		if(lives==0) {
+			
+			endGame();
+		}
+	}
+	if(newText.equalsIgnoreCase(wordToGuess)) {
+		restart();
+	}
 }
 
 
