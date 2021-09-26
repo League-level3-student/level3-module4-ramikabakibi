@@ -8,7 +8,7 @@ public class MazeMaker {
 
     private static int rows;
     private static int cols;
-
+    
     private static Maze maze;
 
     private static Random randGen = new Random();
@@ -23,7 +23,23 @@ public class MazeMaker {
         //    This will be the starting point. Then select a random cell along
         //    the opposite wall and remove its exterior wall. This will be the
         //    finish line.
-        
+       int randomX=randGen.nextInt(2)*(c-1);
+       int randomY=randGen.nextInt(2)*(r-1);
+       
+       if(randomX==0) {
+      
+       }
+       
+       //ASK: I tried to get random x's and y's, but teacher said these were corners
+       //I don't really get how these are corners, bsaically the random gets a random
+       //value of either 0 or 1, and for the x, it multiplies it by the maximum number of columns-1
+       //so basically the last column index, and the same thing for the y's, but I 
+       //don't really understand how 2d arrays work or why these are coerns
+       //I think it's just because its either 0 x and then 0 y, or 0 x and then max y,
+       //or max x and 0 y, or max x max y
+       //Just ask jackie about how to do step 1 here, and why the thing with the corners works
+       //Also need if statements seeing which wall to remove, if y is 0(left side) remove left wall
+       //if y is max(right side) remove right wall
         // 2. select a random cell in the maze to start 
         
         // 3. call the selectNextPath method with the randomly selected cell
