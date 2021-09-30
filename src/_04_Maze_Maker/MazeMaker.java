@@ -23,38 +23,44 @@ public class MazeMaker {
         //    This will be the starting point. Then select a random cell along
         //    the opposite wall and remove its exterior wall. This will be the
         //    finish line.
-       int randomX=randGen.nextInt(2)*(c-1);
-       int randomY=randGen.nextInt(2)*(r-1);
+int rowIn=randGen.nextInt(rows);
+int rowOut=randGen.nextInt(rows);
        
-       if(randomX==0) {
-      
-       }
+    	   maze.cells[rowIn][0].setWestWall(false);
        
-       //ASK: I tried to get random x's and y's, but teacher said these were corners
-       //I don't really get how these are corners, bsaically the random gets a random
-       //value of either 0 or 1, and for the x, it multiplies it by the maximum number of columns-1
-       //so basically the last column index, and the same thing for the y's, but I 
-       //don't really understand how 2d arrays work or why these are coerns
-       //I think it's just because its either 0 x and then 0 y, or 0 x and then max y,
-       //or max x and 0 y, or max x max y
-       //Just ask jackie about how to do step 1 here, and why the thing with the corners works
-       //Also need if statements seeing which wall to remove, if y is 0(left side) remove left wall
-       //if y is max(right side) remove right wall
+       
+    	   maze.cells[rowOut][cols-1].setEastWall(false);
+       
+       
+       
         // 2. select a random cell in the maze to start 
-        
+        	Random h=new Random();
+        	Random k=new Random();
+        	int cellX=h.nextInt(c-1);
+        	int cellY=k.nextInt(r-1);
+        	Cell startCell=new Cell(cellX, cellY);
         // 3. call the selectNextPath method with the randomly selected cell
-
+        	selectNextPath(startCell);
         return maze;
     }
 
     // 4. Complete the selectNextPathMethod
     private static void selectNextPath(Cell currentCell) {
         // A. SET currentCell as visited
-
+    		currentCell.setBeenVisited(true);
         // B. check for unvisited neighbors using the cell
-
+    			ArrayList<Cell> unvisitedNeighbors=getUnvisitedNeighbors(currentCell);
         // C. if has unvisited neighbors,
-
+    			if(!unvisitedNeighbors.isEmpty()) {
+    				Random rand=new Random();
+    				int random=rand.nextInt(unvisitedNeighbors.size());
+    				Cell randomCell=unvisitedNeighbors.get(random);
+    				uncheckedCells.push(randomCell);
+    				removeWalls(currentCell, randomCell);
+    				currentCell=randomCell;
+    				currentCell.setBeenVisited(true);
+    				selectNextPath(currentCell);
+    			}
         // C1. select one at random.
 
         // C2. push it to the stack
@@ -64,10 +70,18 @@ public class MazeMaker {
         // C4. make the new cell the current cell and SET it as visited
 
         // C5. call the selectNextPath method with the current cell
-
+    			
 
         // D. if all neighbors are visited
-
+    			
+    		else {
+    				if(!uncheckedCells.isEmpty()) {
+    					Cell newCell=uncheckedCells.pop();
+    					currentCell=newCell;
+    					selectNextPath(currentCell);
+    				}
+    			}		
+    			
         // D1. if the stack is not empty
 
         // D1a. pop a cell from the stack
@@ -75,6 +89,7 @@ public class MazeMaker {
         // D1b. make that the current cell
 
         // D1c. call the selectNextPath method with the current cell
+    			
 
     }
 
